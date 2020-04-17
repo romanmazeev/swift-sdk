@@ -14,6 +14,10 @@ public class Message {
         case stdtx = "F0625DEE"
         case signature = ""
         case publicKey = "EB5AE987"
+        
+        case createHtlc = "B33F9A24"
+        case claimHtlc = "C1665300"
+        case refundHtlc = "3454A27C"
     }
 
     private enum Source: Int {
@@ -38,6 +42,9 @@ public class Message {
     private var voteOption: VoteOption = .no
     private var source: Source = .broadcast
 
+    private var swapId: String = ""
+    private var randomNumber = ""
+    
     // MARK: - Constructors
 
     private init(type: MessageType, wallet: Wallet) {
@@ -78,11 +85,12 @@ public class Message {
         return message
     }
 
-    public static func transfer(symbol: String, amount: Double, to address: String, wallet: Wallet) -> Message {
+    public static func transfer(symbol: String, amount: Double, to address: String, memo: String, wallet: Wallet) -> Message {
         let message = Message(type: .transfer, wallet: wallet)
         message.symbol = symbol
         message.amount = amount
         message.toAddress = address
+        message.memo = memo
         return message
     }
 
@@ -90,6 +98,12 @@ public class Message {
         let message = Message(type: .vote, wallet: wallet)
         message.proposalId = proposalId
         message.voteOption = option
+        return message
+    }
+    
+    public static func refundHtlc(swapId: String, wallet: Wallet) -> Message {
+        let message = Message(type: .refundHtlc, wallet: wallet)
+        message.swapId = swapId
         return message
     }
 
@@ -210,6 +224,12 @@ public class Message {
             vote.option = Int64(self.voteOption.rawValue)
             return try vote.serializedData()
             
+        case .refundHtlc:
+            var refundHtlc = RefundHashTimerLockMsg()
+            refundHtlc.from = self.wallet.address.unhexlify
+            refundHtlc.swapID = self.swapId.unhexlify
+            return try refundHtlc.serializedData()
+            
         default:
             throw BinanceError(message: "Invalid type")
 
@@ -270,6 +290,12 @@ public class Message {
                           self.voteOption.rawValue,
                           self.proposalId,
                           self.wallet.account)
+            
+            
+        case .refundHtlc:
+            return String(format: JSON.refundHtlc,
+                          self.wallet.account,
+                          self.swapId)
 
         case .signature:
             return String(format: JSON.signature,
@@ -329,4 +355,7 @@ fileprivate class JSON {
     {"option":%d,proposal_id":%d,voter":"%@"}
     """
 
+    static let refundHtlc = """
+    {"from":%@,swap_id":%@,}
+    """
 }
