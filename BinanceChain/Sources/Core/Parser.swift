@@ -76,15 +76,15 @@ class Parser {
         return peer
     }
 
-    func parseToken(_ json: JSON) -> Token {
-        let token = Token()
-        token.name = json["name"].stringValue
-        token.symbol = json["symbol"].stringValue
-        token.originalSymbol = json["original_symbol"].stringValue
-        token.totalSupply = json["total_supply"].doubleValue
-        token.owner = json["owner"].stringValue
-        return token
-    }
+//    func parseToken(_ json: JSON) -> Token {
+//        let token = Token()
+//        token.name = json["name"].stringValue
+//        token.symbol = json["symbol"].stringValue
+//        token.originalSymbol = json["original_symbol"].stringValue
+//        token.totalSupply = json["total_supply"].doubleValue
+//        token.owner = json["owner"].stringValue
+//        return token
+//    }
 
     func parseTrade(_ json: JSON) throws -> Trade {
         let trade = Trade()
