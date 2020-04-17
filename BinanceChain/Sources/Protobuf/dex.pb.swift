@@ -408,49 +408,6 @@ struct DexFeeParam {
   init() {}
 }
 
-struct FixedFeeParams {
-  // SwiftProtobuf.Message conformance is added in an extension below. See the
-  // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
-  // methods supported on all messages.
-
-  /// 0xC2A96FA3
-  var msgType: String = String()
-
-  var fee: Int64 = 0
-
-  var feeFor: Int32 = 0
-
-  var unknownFields = SwiftProtobuf.UnknownStorage()
-
-  init() {}
-}
-
-struct TransferFeeParam {
-  // SwiftProtobuf.Message conformance is added in an extension below. See the
-  // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
-  // methods supported on all messages.
-
-  /// 0x9A3D2769
-  var fixedFeeParams: FixedFeeParams {
-    get {return _fixedFeeParams ?? FixedFeeParams()}
-    set {_fixedFeeParams = newValue}
-  }
-  /// Returns true if `fixedFeeParams` has been explicitly set.
-  var hasFixedFeeParams: Bool {return self._fixedFeeParams != nil}
-  /// Clears the value of `fixedFeeParams`. Subsequent reads from it will return its default value.
-  mutating func clearFixedFeeParams() {self._fixedFeeParams = nil}
-
-  var multiTransferFee: Int64 = 0
-
-  var lowerLimitAsMulti: Int64 = 0
-
-  var unknownFields = SwiftProtobuf.UnknownStorage()
-
-  init() {}
-
-  fileprivate var _fixedFeeParams: FixedFeeParams? = nil
-}
-
 /// sync/async response
 struct ResultBroadcastTx {
   // SwiftProtobuf.Message conformance is added in an extension below. See the
@@ -469,42 +426,6 @@ struct ResultBroadcastTx {
   var unknownFields = SwiftProtobuf.UnknownStorage()
 
   init() {}
-}
-
-/// commit response
-struct ResultBroadcastTxCommit {
-  // SwiftProtobuf.Message conformance is added in an extension below. See the
-  // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
-  // methods supported on all messages.
-
-  var checkTx: Types_ResponseCheckTx {
-    get {return _checkTx ?? Types_ResponseCheckTx()}
-    set {_checkTx = newValue}
-  }
-  /// Returns true if `checkTx` has been explicitly set.
-  var hasCheckTx: Bool {return self._checkTx != nil}
-  /// Clears the value of `checkTx`. Subsequent reads from it will return its default value.
-  mutating func clearCheckTx() {self._checkTx = nil}
-
-  var deliverTx: Types_ResponseDeliverTx {
-    get {return _deliverTx ?? Types_ResponseDeliverTx()}
-    set {_deliverTx = newValue}
-  }
-  /// Returns true if `deliverTx` has been explicitly set.
-  var hasDeliverTx: Bool {return self._deliverTx != nil}
-  /// Clears the value of `deliverTx`. Subsequent reads from it will return its default value.
-  mutating func clearDeliverTx() {self._deliverTx = nil}
-
-  var hash: Data = SwiftProtobuf.Internal.emptyData
-
-  var height: Int64 = 0
-
-  var unknownFields = SwiftProtobuf.UnknownStorage()
-
-  init() {}
-
-  fileprivate var _checkTx: Types_ResponseCheckTx? = nil
-  fileprivate var _deliverTx: Types_ResponseDeliverTx? = nil
 }
 
 struct Issue {
@@ -1783,88 +1704,6 @@ extension DexFeeParam.DexFeeField: SwiftProtobuf.Message, SwiftProtobuf._Message
   }
 }
 
-extension FixedFeeParams: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
-  static let protoMessageName: String = "FixedFeeParams"
-  static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
-    1: .standard(proto: "msg_type"),
-    2: .same(proto: "fee"),
-    3: .standard(proto: "fee_for"),
-  ]
-
-  mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
-    while let fieldNumber = try decoder.nextFieldNumber() {
-      switch fieldNumber {
-      case 1: try decoder.decodeSingularStringField(value: &self.msgType)
-      case 2: try decoder.decodeSingularInt64Field(value: &self.fee)
-      case 3: try decoder.decodeSingularInt32Field(value: &self.feeFor)
-      default: break
-      }
-    }
-  }
-
-  func traverse<V: SwiftProtobuf.Visitor>(visitor: inout V) throws {
-    if !self.msgType.isEmpty {
-      try visitor.visitSingularStringField(value: self.msgType, fieldNumber: 1)
-    }
-    if self.fee != 0 {
-      try visitor.visitSingularInt64Field(value: self.fee, fieldNumber: 2)
-    }
-    if self.feeFor != 0 {
-      try visitor.visitSingularInt32Field(value: self.feeFor, fieldNumber: 3)
-    }
-    try unknownFields.traverse(visitor: &visitor)
-  }
-
-  static func ==(lhs: FixedFeeParams, rhs: FixedFeeParams) -> Bool {
-    if lhs.msgType != rhs.msgType {return false}
-    if lhs.fee != rhs.fee {return false}
-    if lhs.feeFor != rhs.feeFor {return false}
-    if lhs.unknownFields != rhs.unknownFields {return false}
-    return true
-  }
-}
-
-extension TransferFeeParam: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
-  static let protoMessageName: String = "TransferFeeParam"
-  static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
-    1: .standard(proto: "fixed_fee_params"),
-    2: .standard(proto: "multi_transfer_fee"),
-    3: .standard(proto: "lower_limit_as_multi"),
-  ]
-
-  mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
-    while let fieldNumber = try decoder.nextFieldNumber() {
-      switch fieldNumber {
-      case 1: try decoder.decodeSingularMessageField(value: &self._fixedFeeParams)
-      case 2: try decoder.decodeSingularInt64Field(value: &self.multiTransferFee)
-      case 3: try decoder.decodeSingularInt64Field(value: &self.lowerLimitAsMulti)
-      default: break
-      }
-    }
-  }
-
-  func traverse<V: SwiftProtobuf.Visitor>(visitor: inout V) throws {
-    if let v = self._fixedFeeParams {
-      try visitor.visitSingularMessageField(value: v, fieldNumber: 1)
-    }
-    if self.multiTransferFee != 0 {
-      try visitor.visitSingularInt64Field(value: self.multiTransferFee, fieldNumber: 2)
-    }
-    if self.lowerLimitAsMulti != 0 {
-      try visitor.visitSingularInt64Field(value: self.lowerLimitAsMulti, fieldNumber: 3)
-    }
-    try unknownFields.traverse(visitor: &visitor)
-  }
-
-  static func ==(lhs: TransferFeeParam, rhs: TransferFeeParam) -> Bool {
-    if lhs._fixedFeeParams != rhs._fixedFeeParams {return false}
-    if lhs.multiTransferFee != rhs.multiTransferFee {return false}
-    if lhs.lowerLimitAsMulti != rhs.lowerLimitAsMulti {return false}
-    if lhs.unknownFields != rhs.unknownFields {return false}
-    return true
-  }
-}
-
 extension ResultBroadcastTx: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
   static let protoMessageName: String = "ResultBroadcastTx"
   static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
@@ -1907,53 +1746,6 @@ extension ResultBroadcastTx: SwiftProtobuf.Message, SwiftProtobuf._MessageImplem
     if lhs.data != rhs.data {return false}
     if lhs.log != rhs.log {return false}
     if lhs.hash != rhs.hash {return false}
-    if lhs.unknownFields != rhs.unknownFields {return false}
-    return true
-  }
-}
-
-extension ResultBroadcastTxCommit: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
-  static let protoMessageName: String = "ResultBroadcastTxCommit"
-  static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
-    1: .standard(proto: "check_tx"),
-    2: .standard(proto: "deliver_tx"),
-    3: .same(proto: "hash"),
-    4: .same(proto: "height"),
-  ]
-
-  mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
-    while let fieldNumber = try decoder.nextFieldNumber() {
-      switch fieldNumber {
-      case 1: try decoder.decodeSingularMessageField(value: &self._checkTx)
-      case 2: try decoder.decodeSingularMessageField(value: &self._deliverTx)
-      case 3: try decoder.decodeSingularBytesField(value: &self.hash)
-      case 4: try decoder.decodeSingularInt64Field(value: &self.height)
-      default: break
-      }
-    }
-  }
-
-  func traverse<V: SwiftProtobuf.Visitor>(visitor: inout V) throws {
-    if let v = self._checkTx {
-      try visitor.visitSingularMessageField(value: v, fieldNumber: 1)
-    }
-    if let v = self._deliverTx {
-      try visitor.visitSingularMessageField(value: v, fieldNumber: 2)
-    }
-    if !self.hash.isEmpty {
-      try visitor.visitSingularBytesField(value: self.hash, fieldNumber: 3)
-    }
-    if self.height != 0 {
-      try visitor.visitSingularInt64Field(value: self.height, fieldNumber: 4)
-    }
-    try unknownFields.traverse(visitor: &visitor)
-  }
-
-  static func ==(lhs: ResultBroadcastTxCommit, rhs: ResultBroadcastTxCommit) -> Bool {
-    if lhs._checkTx != rhs._checkTx {return false}
-    if lhs._deliverTx != rhs._deliverTx {return false}
-    if lhs.hash != rhs.hash {return false}
-    if lhs.height != rhs.height {return false}
     if lhs.unknownFields != rhs.unknownFields {return false}
     return true
   }

@@ -360,9 +360,9 @@ class ErrorParser: Parser {
 }
 
 class TokenParser: Parser {
-    override func parse(_ json: JSON, response: BinanceChain.Response) {
-        response.tokens = json.map({ self.parseToken($0.1) })
-    }
+//    override func parse(_ json: JSON, response: BinanceChain.Response) {
+//        response.tokens = json.map({ self.parseToken($0.1) })
+//    }
 }
 
 class PeerParser: Parser {

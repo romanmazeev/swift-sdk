@@ -6,7 +6,7 @@ option java_package = "com.binance.dex.api.proto";
 option java_outer_classname = "Transaction";
 
 
-import "types.proto";
+// import "types.proto";
 
 // please note the field name is the JSON name.
 message StdTx {
@@ -158,6 +158,7 @@ message DexFeeParam {
     repeated DexFeeField dex_fee_fields = 1;
 }
 
+/*
 message FixedFeeParams {
     // 0xC2A96FA3
     string msg_type = 1;
@@ -172,6 +173,7 @@ message TransferFeeParam {
     int64 lower_limit_as_multi = 3;
 
 }
+*/
 
 // sync/async response
 message ResultBroadcastTx {
@@ -181,6 +183,8 @@ message ResultBroadcastTx {
     bytes hash = 4;
 }
 
+
+/*
 // commit response
 message ResultBroadcastTxCommit {
     types.ResponseCheckTx check_tx = 1;
@@ -188,6 +192,7 @@ message ResultBroadcastTxCommit {
     bytes hash = 3;
     int64 height = 4;
 }
+*/
 
 
 message Issue {
