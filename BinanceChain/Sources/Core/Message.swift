@@ -23,6 +23,7 @@ public class Message {
     private enum Source: Int {
         case hidden = 0
         case broadcast = 1
+        case cosmostation = 82
     }
 
     private var type: MessageType = .newOrder
@@ -40,7 +41,7 @@ public class Message {
     private var toAddress: String = ""
     private var proposalId: Int = 0
     private var voteOption: VoteOption = .no
-    private var source: Source = .broadcast
+    private var source: Source = .cosmostation
 
     private var swapID: String = ""
     private var randomNumber: String = ""
@@ -113,7 +114,7 @@ public class Message {
     
     public static func createHtlc(toAddress: String, otherFrom: String, otherTo: String,
                                    timestamp: Int64, randomNumberHash: String, sendAmount: Int64, sendDenom: String,
-                                  expectedIncom: String, heightSpan: Int64, crossChain: Bool, wallet: Wallet) -> Message {
+                                   expectedIncom: String, heightSpan: Int64, crossChain: Bool, memo: String, wallet: Wallet) -> Message {
         let message = Message(type: .createHtlc, wallet: wallet)
         message.toAddress = toAddress
         message.senderOtherChain = otherFrom
@@ -125,23 +126,26 @@ public class Message {
         token.amount = sendAmount
         token.denom = sendDenom
         message.tokenAmount = [token]
-        
+
         message.expectedIncome = expectedIncom
         message.heightSpan = heightSpan
         message.crossChain = crossChain
+        message.memo = memo
         return message
     }
     
-    public static func claimHtlc(randomNumber: String, swapId: String, wallet: Wallet) -> Message {
+    public static func claimHtlc(randomNumber: String, swapId: String, memo: String, wallet: Wallet) -> Message {
         let message = Message(type: .claimHtlc, wallet: wallet)
         message.randomNumber = randomNumber
         message.swapID = swapId
+        message.memo = memo
         return message
     }
     
-    public static func refundHtlc(swapId: String, wallet: Wallet) -> Message {
+    public static func refundHtlc(swapId: String, memo: String, wallet: Wallet) -> Message {
         let message = Message(type: .refundHtlc, wallet: wallet)
         message.swapID = swapId
+        message.memo = memo
         return message
     }
 
@@ -162,7 +166,7 @@ public class Message {
         stdtx.msgs.append(message)
         stdtx.signatures.append(signature)
         stdtx.memo = self.memo
-        stdtx.source = Int64(Source.broadcast.rawValue)
+        stdtx.source = Int64(Source.cosmostation.rawValue)
         stdtx.data = self.data
 
         // Prefix length and stdtx type
@@ -434,18 +438,18 @@ fileprivate class JSON {
     """
 
     static let vote = """
-    {"option":%d,proposal_id":%d,voter":"%@"}
+    {"option":%d,"proposal_id":%d,voter":"%@"}
     """
 
     static let createHtlc = """
-    {"amount":[{"amount":%ld,"denom":"%@"}],cross_chain":%@,expected_income":%@,from":%@,height_span":%ld,random_number_hash":%@,recipient_other_chain":%@,sender_other_chain":%@,timestamp":%ld,to":%@}
+    {"amount":[{"amount":%ld,"denom":"%@"}],"cross_chain":%@,"expected_income":"%@","from":"%@","height_span":%ld,"random_number_hash":"%@","recipient_other_chain":"%@","sender_other_chain":"%@","timestamp":%ld,"to":"%@"}
     """
     
     static let claimHtlc = """
-    {"from":%@,random_number":%@,swap_id":%@,}
+    {"from":"%@","random_number":"%@","swap_id":"%@"}
     """
     
     static let refundHtlc = """
-    {"from":%@,swap_id":%@,}
+    {"from":"%@","swap_id":"%@"}
     """
 }
