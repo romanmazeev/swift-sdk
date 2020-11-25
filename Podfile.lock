@@ -18,7 +18,7 @@ PODS:
   - BinanceChain/Test (1.0.0-beta)
   - BinanceChain/Util (1.0.0-beta)
   - CryptoSwift (0.15.0)
-  - HDWalletKit (0.2.8):
+  - HDWalletKit (0.3.6):
     - CryptoSwift (~> 0.12)
     - secp256k1.swift (~> 0.1.4)
   - ObjcExceptionBridging (1.0.1):
