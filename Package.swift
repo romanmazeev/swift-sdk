@@ -21,7 +21,7 @@ let package = Package(
         .package(url: "https://github.com/malcommac/SwiftDate", from: "6.0.1"),
         .package(url: "https://github.com/krzyzanowskim/CryptoSwift", from: "1.0.0"),
         .package(url: "https://github.com/Boilertalk/secp256k1.swift.git", from: "0.1.4"),
-        .package(url: "https://github.com/mh7821/HDWallet.git", .revision("f246f8beaeee84356125e60f5550cf9a74191166"))
+        .package(url: "https://github.com/essentiaone/HDWallet.git", from: "0.3.6")
     ],
     targets: [
         .target(name: "binancechain",
