@@ -4,10 +4,7 @@ import PackageDescription
 let package = Package(
     name: "BinanceChain",
     platforms: [
-        .macOS(.v10_11),
-        .iOS(.v11),
-        .tvOS(.v11),
-        .watchOS(.v2)
+        .macOS(.v10_12)
     ],
     products: [
         .library(name: "BinanceChain", targets: ["binancechain"]),
@@ -21,7 +18,7 @@ let package = Package(
         .package(url: "https://github.com/malcommac/SwiftDate", from: "6.0.1"),
         .package(url: "https://github.com/krzyzanowskim/CryptoSwift", from: "1.0.0"),
         .package(url: "https://github.com/Boilertalk/secp256k1.swift.git", from: "0.1.4"),
-        .package(url: "https://github.com/essentiaone/HDWallet.git", from: "0.3.6")
+        .package(url: "https://github.com/computablelabs/HDWalletKit.git", .branch("develop"))
     ],
     targets: [
         .target(name: "binancechain",
